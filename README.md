@@ -26,8 +26,8 @@ Outputs:
 
 ![image](https://github.com/user-attachments/assets/c1db5aaf-8770-4a24-ba0a-d9ae508ce4de)
 
+Network metrics can be visualized in the Tensor Board with the help of callbacks of Tensor Flow
 
-Neural Network Architecture
-
+![image](https://github.com/user-attachments/assets/acbdb7e3-28ec-490d-b1a1-1c9c83d24490)
 
 
