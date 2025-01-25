@@ -6,14 +6,18 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import TensorBoard
 
 MODEL_DIR = "saved_models"
 MODEL_NAME = "lstm_stock_model.keras"
 
-def download_stock_data(ticker="AAPL", period="10y"):  # Increased period for more data
+def download_stock_data(ticker="AAPL", period="5y"):  # Increased period for more data
     df = yf.download(ticker, period=period, interval="1d")
     df = df[['Close']]
-    df.dropna(inplace=True)
+    # Reindex to include weekends and forward fill
+    all_dates = pd.date_range(start=df.index.min(), end=df.index.max(), freq='D')
+    df = df.reindex(all_dates)
+    df.ffill(inplace=True)
     return df
 
 def create_dataset(series, window_size):
@@ -35,7 +39,8 @@ def build_lstm_model(input_shape):
     return model
 
 def main():
-    df = download_stock_data(ticker="AAPL", period="10y")
+    df = download_stock_data(ticker="AAPL", period="5y")
+    pd.DataFrame(df).to_csv('AAPL.csv')
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_data = scaler.fit_transform(df.values)
     
@@ -57,7 +62,10 @@ def main():
     X_test = X_test.reshape((X_test.shape[0], X_test.shape[1], 1))
 
     model = build_lstm_model((window_size, 1))
-    model.fit(X_train, y_train, epochs=5, batch_size=32, validation_data=(X_test, y_test))
+    # Set up the TensorBoard callback
+    tensorboard_callback = TensorBoard(log_dir='./logs', histogram_freq=1, write_graph=True)
+
+    model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_test, y_test),  callbacks=[tensorboard_callback])
 
     if not os.path.exists(MODEL_DIR):
         os.makedirs(MODEL_DIR)
