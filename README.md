@@ -22,7 +22,6 @@ Loss Function: Mean Squared Error (MSE)
 Optimizer: Adam
 
 Outputs:
-![image](https://github.com/user-attachments/assets/1b86a4f8-cd7d-46dc-9349-ebda781282f1)
 
 ![image](https://github.com/user-attachments/assets/c1db5aaf-8770-4a24-ba0a-d9ae508ce4de)
 
