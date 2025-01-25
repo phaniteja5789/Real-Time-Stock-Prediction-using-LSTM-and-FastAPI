@@ -8,7 +8,7 @@ Key Features
 
 Automated Data Collection: Retrieves historical stock prices via yfinance.
 Data Preprocessing & Scaling: Uses MinMaxScaler to transform price data.
-LSTM Deep Learning Model: Captures time-series dependencies with sliding windows of 60 days.
+LSTM Deep Learning Model: Captures time-series dependencies with sliding windows of 365 days.
 FastAPI Inference Endpoint: Exposes a /predict route to get next-day price predictions.
 
 
@@ -20,6 +20,8 @@ Dropout (20%)
 Dense output (7 unit for final prediction) ==> To predict 7 days prediction
 Loss Function: Mean Squared Error (MSE)
 Optimizer: Adam
+
+Preprocessing ==> Used the ffill, in order to handle the dates, where the stock is not captured
 
 Outputs:
 
